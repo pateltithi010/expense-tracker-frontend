@@ -5,7 +5,7 @@ export default function ItemForm({ fetchItems }) {
   const [amount, setAmount] = useState("");
 
   const addItem = async () => {
-    await fetch("http://localhost:3000/items", {
+    await fetch("https://expense-tracker-backend-1-gxic.onrender.com", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, amount }),
