@@ -4,6 +4,7 @@ import ExpenseList from "./components/ExpenseList";
 
 function App() {
   const [expenses, setExpenses] = useState([]);
+  const [editExpense, setEditExpense] = useState(null);
 
   const fetchExpenses = async () => {
     const res = await fetch(
@@ -20,8 +21,18 @@ function App() {
   return (
     <div>
       <h2>Expense Tracker</h2>
-      <ExpenseForm fetchExpenses={fetchExpenses} />
-      <ExpenseList expenses={expenses} />
+
+      <ExpenseForm
+        fetchExpenses={fetchExpenses}
+        editExpense={editExpense}
+        setEditExpense={setEditExpense}
+      />
+
+      <ExpenseList
+        expenses={expenses}
+        fetchExpenses={fetchExpenses}
+        setEditExpense={setEditExpense}
+      />
     </div>
   );
 }

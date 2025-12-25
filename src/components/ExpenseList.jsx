@@ -1,15 +1,16 @@
 import ExpenseItem from "./ExpenseItem";
 
-export default function ExpenseList({ expenses }) {
+export default function ExpenseList({ expenses, fetchExpenses, setEditExpense }) {
   return (
     <div>
-      {expenses.length === 0 ? (
-        <p>No expenses added</p>
-      ) : (
-        expenses.map((expense) => (
-          <ExpenseItem key={expense._id} expense={expense} />
-        ))
-      )}
+      {expenses.map(exp => (
+        <ExpenseItem
+          key={exp._id}
+          expense={exp}
+          fetchExpenses={fetchExpenses}
+          setEditExpense={setEditExpense}
+        />
+      ))}
     </div>
   );
 }
