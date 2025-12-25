@@ -1,35 +1,51 @@
 import { useState } from "react";
 
-const API = "http://localhost:5000/api/expenses";
+const API_URL = "https://expense-tracker-backend-1-gxic.onrender.com/api/expenses";
 
-export default function ExpenseForm({ fetchExpenses }) {
-  const [form, setForm] = useState({ title: "", amount: "", category: "" });
-  const [msg, setMsg] = useState("");
+export default function ExpenseForm({ onAdd }) {
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
 
-  const submit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(API, {
+
+    const res = await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        amount: Number(amount),
+      }),
     });
-    setMsg("Expense added successfully!");
-    setForm({ title: "", amount: "", category: "" });
-    fetchExpenses();
+
+    const data = await res.json();
+    onAdd(data);
+
+    setTitle("");
+    setAmount("");
   };
 
   return (
-    <>
-      <form onSubmit={submit}>
-        <input placeholder="Title" value={form.title}
-          onChange={e => setForm({ ...form, title: e.target.value })} />
-        <input placeholder="Amount" type="number" value={form.amount}
-          onChange={e => setForm({ ...form, amount: e.target.value })} />
-        <input placeholder="Category" value={form.category}
-          onChange={e => setForm({ ...form, category: e.target.value })} />
-        <button className="add">Add Expense</button>
-      </form>
-      {msg && <p className="success">{msg}</p>}
-    </>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Expense title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+
+      <input
+        type="number"
+        placeholder="Amount"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        required
+      />
+
+      <button>Add Expense</button>
+    </form>
   );
 }
