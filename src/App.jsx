@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
 
-const API = "http://localhost:5000/api/expenses";
+const API_URL = "https://expense-tracker-backend-1-gxic.onrender.com/api/expenses";
+
 
 export default function App() {
   const [expenses, setExpenses] = useState([]);
