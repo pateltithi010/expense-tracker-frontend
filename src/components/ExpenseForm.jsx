@@ -1,33 +1,40 @@
 import { useState } from "react";
 
-export default function ItemForm({ fetchItems }) {
+const API_URL = "https://expense-tracker-backend-1-gxic.onrender.com/api/expenses";
+
+export default function ExpenseForm({ onAdd }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
 
-  const addItem = async () => {
-    await fetch(
-      "https://expense-tracker-backend-1-gxic.onrender.com/api/expenses",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          amount: Number(amount),
-        }),
-      }
-    );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        amount: Number(amount),
+      }),
+    });
+
+    const data = await res.json();
+    onAdd(data);
 
     setTitle("");
     setAmount("");
-    fetchItems();
   };
 
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <input
-        placeholder="Title"
+        type="text"
+        placeholder="Expense title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
 
       <input
@@ -35,9 +42,10 @@ export default function ItemForm({ fetchItems }) {
         placeholder="Amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
+        required
       />
 
-      <button onClick={addItem}>Add</button>
-    </>
+      <button>Add Expense</button>
+    </form>
   );
 }
