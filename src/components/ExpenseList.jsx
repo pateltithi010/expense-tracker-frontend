@@ -1,23 +1,15 @@
-const API = "http://localhost:5000/api/expenses";
+import ExpenseItem from "./ExpenseItem";
 
-export default function ExpenseList({ expenses, fetchExpenses }) {
-
-  const deleteExpense = async (id) => {
-    if (!window.confirm("Delete this expense?")) return;
-    await fetch(`${API}/${id}`, { method: "DELETE" });
-    fetchExpenses();
-  };
-
+export default function ExpenseList({ expenses }) {
   return (
-    <ul>
-      {expenses.map(exp => (
-        <li key={exp._id}>
-          {exp.title} - ₹{exp.amount} ({exp.category})
-          <button className="delete" onClick={() => deleteExpense(exp._id)}>
-            Delete
-          </button>
-        </li>
-      ))}
-    </ul>
+    <div>
+      {expenses.length === 0 ? (
+        <p>No expenses added</p>
+      ) : (
+        expenses.map((expense) => (
+          <ExpenseItem key={expense._id} expense={expense} />
+        ))
+      )}
+    </div>
   );
 }

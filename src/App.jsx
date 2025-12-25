@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
 
-const API_URL = "https://expense-tracker-backend-1-gxic.onrender.com/api/expenses";
-
-
-export default function App() {
+function App() {
   const [expenses, setExpenses] = useState([]);
 
   const fetchExpenses = async () => {
-    const res = await fetch(API);
+    const res = await fetch(
+      "https://expense-tracker-backend-1-gxic.onrender.com/api/expenses"
+    );
     const data = await res.json();
     setExpenses(data);
   };
@@ -19,10 +18,12 @@ export default function App() {
   }, []);
 
   return (
-    <div className="container">
+    <div>
       <h2>Expense Tracker</h2>
       <ExpenseForm fetchExpenses={fetchExpenses} />
-      <ExpenseList expenses={expenses} fetchExpenses={fetchExpenses} />
+      <ExpenseList expenses={expenses} />
     </div>
   );
 }
+
+export default App;
